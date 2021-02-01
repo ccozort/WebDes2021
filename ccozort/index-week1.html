@@ -1,0 +1,45 @@
+<!-- Tells the browser what version of HTML to use... -->
+<!DOCTYPE html>
+<!-- opening html content tag -->
+<html>
+<!-- opens the head where linking and metadata can go -->
+
+<head>
+    <!-- sets character set to be used by document -->
+    <meta charset="utf-8">
+    <title>My test page</title>
+    <!-- style or CSS -->
+    <style>
+        .buttons {
+            color: blue;
+        }
+    </style>
+    <!-- javascript elements -->
+    <script>
+        function myFunction() {
+            window.open("https://www.w3schools.com");
+        }
+    </script>  
+</head>
+
+<body>
+
+    <h1>My first heading...</h1>
+    <p>My first paragraph...</p>
+    <!-- creating code for a button...-->
+    <button style="float:right" onclick="myFunction()" class="buttons" type="button">
+        Home
+    </button>
+    <button class="buttons" type="button">
+        About Us
+    </button>
+    <button class="buttons" type="button">
+        Shop here...
+    </button>
+    <button class="buttons" type="button">
+        Contact
+    </button>
+
+</body>
+
+</html>
