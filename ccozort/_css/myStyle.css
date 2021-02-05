@@ -1,7 +1,10 @@
 /* This is a CSS comment */
+
+/* this is an ID */
 #canvas {
     border:1px solid #000000;
 }
+/* this is a class... */
 .container{
     margin: 0 auto;
     width: 2000px;
