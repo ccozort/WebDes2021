@@ -1,4 +1,7 @@
 /* This is a CSS comment */
+p {
+    color: red;
+}
 
 /* this is an ID */
 #canvas {
