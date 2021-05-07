@@ -1,0 +1,57 @@
+/* This is a CSS comment */
+p {
+    color: red;
+}
+
+/* this is an ID */
+#canvas {
+    border:1px solid #000000;
+}
+/* this is a class... */
+.container{
+    margin: 0 auto;
+    width: 2000px;
+    height: 1000px;
+}
+.topback{
+    margin: 0 auto;
+    width: 2000px;
+    height: 33%;
+    background-color: #0000FF;
+    z-index: -1;
+}
+.middleback{
+    margin: 0 auto;
+    width: 2000px;
+    height: 33%;
+    background-color: #33ff00;
+    z-index: -1;
+}
+.bottomback{
+    margin: 0 auto;
+    width: 2000px;
+    height: 33%;
+    background-color: #ff3c00;
+    z-index: -1;
+}
+.blueblock {
+    position: absolute;
+    top: 45px;
+    float: left;
+    background-color: #0000FF;
+    width: 700px;
+    height: 500px;
+}
+.redstripe {
+    float: right;
+    height: 50px;
+    width: 2000px;
+    background-color: #db0c40
+}
+
+.whitestripe {
+    float: right;
+    height: 50px;
+    width: 2000px;
+    background-color: #FFFFFF
+}

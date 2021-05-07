@@ -607,10 +607,16 @@ progress {
   .container-sm, .container {
     max-width: 540px;
   }
+  body{
+    color: var(--bs-pink);
+  }
 }
 @media (min-width: 768px) {
   .container-md, .container-sm, .container {
     max-width: 720px;
+  }
+  body{
+    color: var(--bs-blue);
   }
 }
 @media (min-width: 992px) {
