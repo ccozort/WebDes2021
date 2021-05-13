@@ -59,6 +59,37 @@ backgroundimg.onload = function () {
   backgroundimg.rdy = true;
 }
 
+let simpleLevelPlan = `
+......................
+..#................#..
+..#..............=.#..
+..#.........o.o....#..
+..#.@......#####...#..
+..#####............#..
+......#++++++++++++#..
+......##############..
+......................`;
+
+
+function gridMap(plan){
+  let rows = plan.trim().split("\n").map(l => [...l]);
+  this.height = rows.length;
+  this.width = rows[0].length;
+  console.log(rows);
+  this.startActors = [];
+
+  this.rows = rows.map((row, y) => {
+    return row.map((ch, x) => {
+      let type = levelChars[ch];
+      if (typeof type == "string") return type;
+      this.startActors.push(
+        type.create(new Vec(x, y), ch));
+        return "empty";
+      });
+    });
+    console.log(this.startActors);
+}
+
 function pointCollide(point, obj) {
   if (point.x <= obj.x + obj.w &&
     obj.x <= point.x &&
@@ -162,6 +193,18 @@ function init() {
 
 
 //############################ ALL GAME CLASSES #########################
+
+class Vec {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+  }
+  plus(other) {
+    return new Vec(this.x + other.x, this.y + other.y);
+  }
+  times(factor) {
+    return new Vec(this.x * factor, this.y * factor);
+  }
+}
 class Sprite {
   constructor(w, h, x, y, c) {
     this.w = w;
@@ -171,6 +214,7 @@ class Sprite {
     this.color = c;
     this.spliced = false;
   }
+  
   get cx() {
     return this.x + this.w * 0.5;
   }
@@ -246,6 +290,9 @@ class Player extends Sprite {
     this.vy = vy;
     this.speed = 3;
     this.canjump = true;
+  }
+  static create(pos) {
+    return new Player();
   }
   moveinput() {
     if ('w' in keysDown || 'W' in keysDown) { // Player control
@@ -353,6 +400,9 @@ class Wall extends Sprite {
     super(w, h, x, y, c);
     this.type = "normal";
   }
+  static create(pos) {
+    return new Wall();
+  }
   draw() {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.w, this.h);
@@ -416,12 +466,16 @@ class Level{
 }
 
 // ###################### INSTANTIATE CLASSES ##########################
-let level = new Level(1);
+// let level = new Level(1);
 let player = new Player(25, 25, WIDTH / 2, HEIGHT / 2, 'red', 0, 0);
 
 // adds two different sets of mobs to the mobs array
-
-
+const levelChars = {
+  ".": "empty", "#": "wall", "+": "lava",
+  "@": Player, "o": Wall,
+  "=": Wall, "|": Wall, "v": Wall
+};
+gridMap(simpleLevelPlan);
 
 
 
@@ -471,7 +525,7 @@ let GAMETIME = null;
 // ###################### UPDATE ALL ELEMENTS ON CANVAS ################################
 function update() {
   player.update();
-  level.update();
+  // level.update();
   for (e of effects) {
     e.update();
   }
@@ -481,9 +535,7 @@ function update() {
     }
   }
   GAMETIME = counter();
-  if (GAMETIME > 5) {
-    console.log("game over...");
-  }
+
 
   //updates all mobs in a group
   for (let w of walls) {
@@ -506,14 +558,14 @@ function update() {
     //   player.x = w.x + w.w;
     // }
   }
-  for (let m of level.mobs1) {
+  for (let m of mobs1) {
     m.update();
     if (player.collide(m)) {
       SCORE++;
       m.spliced = true;
     }
   }
-  for (let m of level.mobs2) {
+  for (let m of mobs2) {
     m.update();
     if (player.collide(m)) {
       m.spliced = true;
@@ -531,14 +583,14 @@ function update() {
   //   }
   // }
   // splice stuff as needed
-  for (let m in level.mobs1) {
-    if (level.mobs1[m].spliced) {
-      level.mobs1.splice(m, 1);
+  for (let m in mobs1) {
+    if (mobs1[m].spliced) {
+      mobs1.splice(m, 1);
     }
   }
-  for (let m in level.mobs2) {
-    if (level.mobs2[m].spliced) {
-      level.mobs2.splice(m, 1);
+  for (let m in mobs2) {
+    if (mobs2[m].spliced) {
+      mobs2.splice(m, 1);
     }
   }
 
@@ -553,7 +605,6 @@ function draw() {
   //   ctx.drawImage(backgroundimg, 0, 0);
   // }
 
-  drawText('black', "24px Helvetica", "left", "top", "Level: " + level.count, 300, 0);
   drawText('black', "24px Helvetica", "left", "top", "Timer: " + GAMETIME, 450, 0);
   drawText('black', "24px Helvetica", "left", "top", "Score: " + SCORE, 600, 0);
   // drawText('black', "24px Helvetica", "left", "top", "FPS: " + fps, 400, 0);
@@ -565,10 +616,10 @@ function draw() {
   for (let w of walls) {
     w.draw();
   }
-  for (let m of level.mobs1) {
+  for (let m of mobs1) {
     m.draw();
   }
-  for (let m of level.mobs2) {
+  for (let m of mobs2) {
     m.draw();
   }
   for (let e of effects) {
@@ -582,7 +633,7 @@ let now;
 let delta;
 let gDelta;
 let then = performance.now();
-level.new(1);
+// level.new(1);
 
 // ########## MAIN GAME LOOP ##########
 function main() {
